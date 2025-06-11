@@ -19,19 +19,15 @@
       margin: 0;
       padding: 0;
       min-height: 100vh;
-      background: var(--content-bg) !important;
+      background: var(--content-bg);
       font-family: 'Inter', sans-serif;
       color: #f5f5f5;
       overflow-x: hidden;
-    }
-    body {
-      background: var(--content-bg) !important;
     }
     h1, h2, h3, .bebas {
       font-family: 'Bebas Neue', sans-serif;
       letter-spacing: 0.02em;
     }
-    /* NAVBAR STYLES */
     .navbar {
       position: sticky;
       top: 0; left: 0; width: 100vw;
@@ -46,6 +42,23 @@
       box-shadow: 0 8px 32px #FF814725, 0 2px 16px #1CAB6410;
       backdrop-filter: blur(16px) saturate(1.12);
       color: #fff;
+      justify-content: flex-start;
+      gap: 1.3rem;
+    }
+    .menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--orange);
+      font-size: 2.5rem;
+      margin-right: 1.2rem;
+      margin-left: 0;
+      cursor: pointer;
+      z-index: 1301;
+    }
+    @media (max-width: 900px) {
+      .navbar nav { display: none; }
+      .menu-btn { display: block; }
     }
     .navbar .brand {
       display: flex;
@@ -58,7 +71,6 @@
       filter: drop-shadow(0 0 7px #1CAB64);
       text-shadow: 0 2px 12px #23232370;
       z-index: 2;
-      margin-right: 2rem;
       flex: 0 0 auto;
     }
     .logo-img {
@@ -120,33 +132,18 @@
     .navbar nav a:hover::after, .navbar nav a.active::after {
       width: 80%;
     }
-    .navbar .menu-btn {
-      background: none;
-      border: none;
-      color: var(--orange);
-      margin-left: auto;
-      font-size: 2.1rem;
-      cursor: pointer;
-      display: none;
-      z-index: 1301;
-    }
-    @media (max-width: 900px) {
-      .navbar nav { display: none; }
-      .navbar .menu-btn { display: block; }
-      .navbar .brand { margin-right: 0; }
-    }
-    /* SIDEBAR MOBILE */
+    /* Sidebar styles */
     .sidebar {
       position: fixed;
       top: 78px;
       left: 0;
-      height: calc(100vh - 78px);
       width: 230px;
-      background: rgba(30,41,59,0.97);
+      height: calc(100vh - 78px);
+      background: rgba(30,41,59,0.98);
       color: #fff;
       box-shadow: 2px 0 24px #0009;
-      z-index: 1300;
-      padding-top: 2rem;
+      z-index: 1201;
+      padding-top: 1.2rem;
       transition: left .3s;
       display: flex;
       flex-direction: column;
@@ -154,20 +151,43 @@
     }
     .sidebar.closed { left: -260px; }
     .sidebar.open { left: 0; }
-    .sidebar nav { display: flex; flex-direction: column; gap: 2px; margin-top: 0.5rem;}
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 1.2rem 1.2rem 1.2rem;
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      min-height: 3.5rem;
+      background: transparent;
+      z-index: 1310;
+    }
+    .sidebar .close-btn {
+      background: none;
+      border: none;
+      color: var(--orange);
+      font-size: 2.3rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+      margin-left: auto;
+    }
+    .sidebar nav {
+      display: flex; flex-direction: column; gap: 0.6rem; margin-top: 3.2rem;
+    }
     .sidebar nav a {
-      display: block;
-      padding: 1.05rem 2rem;
       color: #fff;
       text-decoration: none;
-      border-radius: 0.8rem;
-      font-size: 1.13rem;
-      transition: background 0.21s, color 0.21s, transform 0.2s;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      padding: 1rem 2rem;
+      border-radius: 0.7rem;
+      transition: background 0.16s, color 0.18s, transform 0.2s;
     }
     .sidebar nav a:hover {
-      background: var(--orange);
+      background: #FF8147;
       color: #fff;
-      transform: scale(1.05) translateX(6px);
+      transform: scale(1.05) translateX(5px);
     }
     .main-content {max-width: 980px; margin: 0 auto; padding: 2.5rem 1rem 2rem 1rem; transition: margin-left 0.3s;}
     @media (min-width: 801px) {.main-content.shifted { margin-left: 230px; }}
@@ -272,7 +292,6 @@
       margin-bottom: 0.2em;
       text-align: center;
     }
-    /* Review Section */
     .reviews-section {
       background: var(--card-bg);
       border-radius: 1.1em;
@@ -316,7 +335,6 @@
     .review-name { color: var(--orange); font-family: 'Bebas Neue', sans-serif; font-size: 1.18em; margin-bottom: 0.3em; letter-spacing: 0.06em; }
     .review-stars { color: var(--red); margin: 0.2em 0 0.7em 0; font-size: 1.1em; letter-spacing: 0.06em; }
     .review-text { color: #ccc; font-size: 1.03em; }
-    /* Contact/map section */
     .contact-flex {
       display: flex;
       flex-wrap: wrap;
@@ -355,7 +373,10 @@
   <div class="bg-animated" id="bubbles"></div>
   <div id="click-anim"></div>
   <!-- Sidebar -->
-  <aside id="sidebar" class="sidebar closed">
+  <aside id="sidebar" class="sidebar closed" aria-label="Mobile Navigation">
+    <div class="sidebar-header">
+      <button class="close-btn" id="sidebarCloseBtn" aria-label="Close Menu">&#10005;</button>
+    </div>
     <nav>
       <a href="#home">Home</a>
       <a href="#products">Products</a>
@@ -366,6 +387,7 @@
   </aside>
   <!-- Modern Navbar -->
   <header class="navbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Open Menu">&#9776;</button>
     <span class="brand bebas">
       <img class="logo-img" src="logo.png" alt="KD Mini Mart Logo" />
       KD Mini Mart
@@ -377,7 +399,6 @@
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </nav>
-    <button class="menu-btn" id="menuBtn" aria-label="Open Menu">&#9776;</button>
   </header>
   <main id="mainContent" class="main-content">
     <!-- HERO -->
@@ -474,9 +495,55 @@
     </section>
   </main>
   <script>
+    // Hamburger/Sidebar
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+    const mainContent = document.getElementById('mainContent');
+    let sidebarOpen = false;
+    menuBtn.onclick = (e) => {
+      e.stopPropagation();
+      sidebarOpen = true;
+      sidebar.classList.remove('closed');
+      sidebar.classList.add('open');
+      if (mainContent) mainContent.classList.add('shifted');
+      document.body.style.overflow = 'hidden';
+    };
+    sidebarCloseBtn.onclick = (e) => {
+      e.stopPropagation();
+      sidebarOpen = false;
+      sidebar.classList.remove('open');
+      sidebar.classList.add('closed');
+      if (mainContent) mainContent.classList.remove('shifted');
+      document.body.style.overflow = '';
+    };
+    document.addEventListener('click', e => {
+      if (
+        sidebarOpen &&
+        !sidebar.contains(e.target) &&
+        !menuBtn.contains(e.target)
+      ) {
+        sidebar.classList.remove('open');
+        sidebar.classList.add('closed');
+        if (mainContent) mainContent.classList.remove('shifted');
+        document.body.style.overflow = '';
+        sidebarOpen = false;
+      }
+    });
+    Array.from(sidebar.querySelectorAll('a')).forEach(link=>{
+      link.onclick = ()=> {
+        sidebar.classList.remove('open');
+        sidebar.classList.add('closed');
+        if (mainContent) mainContent.classList.remove('shifted');
+        document.body.style.overflow = '';
+        sidebarOpen = false;
+      }
+    });
+
     // Floating Bubbles Animation
     function makeFloatingBubbles() {
       const bubbles = document.getElementById('bubbles');
+      if (!bubbles) return;
       bubbles.innerHTML = "";
       const colors = [
         "rgba(255,129,71,0.17)",
@@ -542,49 +609,6 @@
     document.addEventListener('click', function(e) {
       if (e.target.closest('#sidebar,.menu-btn,nav,.logo-img,.navbar,.sidebar')) return;
       popThing(e.clientX, e.clientY);
-    });
-
-    // Sidebar open/close
-    const menuBtn = document.getElementById('menuBtn');
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('mainContent');
-    let sidebarOpen = false;
-    menuBtn.onclick = (e) => {
-      e.stopPropagation();
-      sidebarOpen = !sidebarOpen;
-      if (sidebarOpen) {
-        sidebar.classList.remove('closed');
-        sidebar.classList.add('open');
-        mainContent.classList.add('shifted');
-        document.body.style.overflow = 'hidden';
-      } else {
-        sidebar.classList.remove('open');
-        sidebar.classList.add('closed');
-        mainContent.classList.remove('shifted');
-        document.body.style.overflow = '';
-      }
-    };
-    document.addEventListener('click', e => {
-      if (
-        sidebarOpen &&
-        !sidebar.contains(e.target) &&
-        !menuBtn.contains(e.target)
-      ) {
-        sidebar.classList.remove('open');
-        sidebar.classList.add('closed');
-        mainContent.classList.remove('shifted');
-        document.body.style.overflow = '';
-        sidebarOpen = false;
-      }
-    });
-    Array.from(sidebar.querySelectorAll('a')).forEach(link=>{
-      link.onclick = ()=> {
-        sidebar.classList.remove('open');
-        sidebar.classList.add('closed');
-        mainContent.classList.remove('shifted');
-        document.body.style.overflow = '';
-        sidebarOpen = false;
-      }
     });
   </script>
 </body>
